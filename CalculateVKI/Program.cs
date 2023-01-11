@@ -1,67 +1,68 @@
-﻿namespace CalculateVKI
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using CalculateVKI.Business;
+
+namespace CalculateVKI
 {
     public class Program
     {
         public static void Main()
         {
-            TeshisEt();
-        }
-        static (double boy, double kilo) HastaBilgileriniAl()
-        {
-            Console.Clear();
-            Console.WriteLine("Lütfen boy ve kilo değerlerinizi metre ve kg ölçüleri ile giriniz ");
-            Console.Write(" Boy : ");
-            double boy = Convert.ToDouble(Console.ReadLine());
-            Console.Write(" Kilo : ");
-            double kilo = Convert.ToDouble(Console.ReadLine());
-            return(boy, kilo);
-        }
-        static double CalculateVKI(double boy,double kilo)
-        {
-            
-            double VKI = kilo / (boy * boy);
-            return(VKI);
+            CreatePatientVKI();
         }
 
-        static void TeshisEt()
+        private static void CreatePatientVKI()
         {
-            var bilgiler = HastaBilgileriniAl();
-            double VKI = CalculateVKI(bilgiler.boy, bilgiler.kilo);
+            VKI newVKI = new VKI();
 
-            if (VKI < 18.49)
+            Console.Write("Lütfen boyunuzu metre cinsinden giriniz : ");
+            newVKI.boy = Convert.ToDouble(Console.ReadLine());
+            Console.Write("Lütfen kilonuzu kg cinsinden giriniz : ");
+            newVKI.kilo = Convert.ToDouble(Console.ReadLine());
+
+            VKIService.SavePatientVKI(newVKI);
+
+            WriteVKIToScreen(newVKI);
+
+            Again();
+
+        }
+
+        private static void Again()
+        {
+            Console.WriteLine("Başka bir hasta teşhisi için E'yi, teşhis konulan hastaların listesi için L'yi tuşlayınız");
+            string choose = Console.ReadLine();
+            if(choose == "E" || choose == "e")
             {
-                Console.WriteLine($"Hastanın boyu {bilgiler.boy}, kilosu {bilgiler.kilo} , vücut kitle indeksi {VKI}, teşhisi : ZAYIF ");
+                CreatePatientVKI();
             }
-            else if (VKI >= 18.49 && VKI < 24.99)
+            else if (choose == "L" || choose == "l")
             {
-                Console.WriteLine($"Hastanın boyu {bilgiler.boy}, kilosu {bilgiler.kilo} , vücut kitle indeksi {VKI}, teşhisi : İDEAL ");
-            }
-            else if (VKI >= 24.99 && VKI < 29.99)
-            {
-                Console.WriteLine($"Hastanın boyu {bilgiler.boy}, kilosu {bilgiler.kilo} , vücut kitle indeksi {VKI}, teşhisi : HAFİF KİLOLU ");
+                PatientVKIList();
             }
             else
             {
-                Console.WriteLine($"Hastanın boyu {bilgiler.boy}, kilosu {bilgiler.kilo} , vücut kitle indeksi {VKI}, teşhisi : OBEZ ");
+                Console.WriteLine("Hatalı tuşlama yaptınız,devam etmek için ENTER tuşuna basın");
+              Console.ReadLine();
+              Again();
             }
-            BaskaHesaplamaSecimi();
+            
         }
 
-        static void BaskaHesaplamaSecimi()
+        static void WriteVKIToScreen(VKI x)
         {
-            Console.WriteLine("Başka işlem yapmak ister misiniz? (E/H)");
-            string secim = Console.ReadLine();
+            Console.WriteLine($"Hastanın boyu : {x.boy}, Hastanın kilosu : {x.kilo}, Vücut kitle indeksi : {x.kilo / (x.boy * x.boy)} , Teşhis : {VKI.Diagnosis(x)}");
+        }
+        static void PatientVKIList()
+        {
+            var patientList = VKIService.GetVKIList();
 
-            switch ( secim )
+            foreach(var item in patientList ) 
             {
-                case "E":
-                case "e":
-                    TeshisEt();
-                break;
-                case "H":
-                case "h":
-                    Environment.Exit(0);
-                    break;
+                WriteVKIToScreen(item);
             }
         }
     }
