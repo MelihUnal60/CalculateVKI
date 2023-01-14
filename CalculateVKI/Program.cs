@@ -43,7 +43,7 @@ namespace CalculateVKI
 
         private static void Again()
         {
-            Console.WriteLine("Başka bir hasta teşhisi için E'yi, teşhis konulan hastaların listesi için L'yi tuşlayınız");
+            Console.WriteLine("Başka bir hasta teşhisi için E'yi, teşhis konulan hastaların listesi için L'yi,listede arama yapmak için S'yi tuşlayınız");
             string choose = Console.ReadLine();
             if(choose == "E" || choose == "e")
             {
@@ -52,6 +52,10 @@ namespace CalculateVKI
             else if (choose == "L" || choose == "l")
             {
                 PatientVKIList();
+            }
+            else if (choose == "S" || choose == "s")
+            {
+                Search();
             }
             else
             {
