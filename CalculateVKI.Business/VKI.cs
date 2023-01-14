@@ -5,6 +5,7 @@ namespace CalculateVKI.Business
     {
         public double boy;
         public double kilo;
+        public string ad;
 
         public double FindVKI()
         {

@@ -14,10 +14,20 @@ namespace CalculateVKI
             CreatePatientVKI();
         }
 
+        private static void Search()
+        {
+            Console.Write("Aranacak hasta adını girin : ");
+            string filterKey = Console.ReadLine();
+            var data = VKIService.SearchWithPatientName(filterKey);
+
+            WriteFromPatientList(data);
+        }
+
         private static void CreatePatientVKI()
         {
             VKI newVKI = new VKI();
-
+            Console.Write("Lütfen hasta adını yazınız : ");
+            newVKI.ad = Console.ReadLine();
             Console.Write("Lütfen boyunuzu metre cinsinden giriniz : ");
             newVKI.boy = Convert.ToDouble(Console.ReadLine());
             Console.Write("Lütfen kilonuzu kg cinsinden giriniz : ");
@@ -52,18 +62,23 @@ namespace CalculateVKI
             
         }
 
+        private static void WriteFromPatientList(IReadOnlyCollection<VKI> list)
+        {
+            foreach (VKI x in list) 
+            {
+                WriteVKIToScreen(x);
+            }
+        }
+
         static void WriteVKIToScreen(VKI x)
         {
-            Console.WriteLine($"Hastanın boyu : {x.boy}, Hastanın kilosu : {x.kilo}, Vücut kitle indeksi : {x.kilo / (x.boy * x.boy)} , Teşhis : {VKI.Diagnosis(x)}");
+            Console.WriteLine($"Hastanın adı : {x.ad}, Hastanın boyu : {x.boy}, Hastanın kilosu : {x.kilo}, Vücut kitle indeksi : {x.kilo / (x.boy * x.boy)} , Teşhis : {VKI.Diagnosis(x)}");
         }
         static void PatientVKIList()
         {
             var patientList = VKIService.GetVKIList();
 
-            foreach(var item in patientList ) 
-            {
-                WriteVKIToScreen(item);
-            }
+            WriteFromPatientList(patientList);
         }
     }
-}
+}   
