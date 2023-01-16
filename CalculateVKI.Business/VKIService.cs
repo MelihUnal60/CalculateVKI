@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -65,14 +66,23 @@ namespace CalculateVKI.Business
         {
             GetVKIList();
 
-            var sonuc = new List<VKI>();
-            foreach(var item in list)
-            {
-                if (item.ad == ad) 
-                    sonuc.Add(item);
-            }
-
+            var sonuc = list.Where(q => q.ad == ad).ToList();
             return sonuc.AsReadOnly();
+
+
+           // var sonuc = (from q in list
+             //           where q.ad == ad
+               //         select q).ToList();
+
+
+            //var sonuc = new List<VKI>();
+            //foreach(var item in list)
+            //{
+              //  if (item.ad == ad) 
+              //    sonuc.Add(item);
+            //}
+
+            //return sonuc.AsReadOnly();
         }
     }
 }
