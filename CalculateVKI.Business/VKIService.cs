@@ -66,12 +66,12 @@ namespace CalculateVKI.Business
         {
             GetVKIList();
 
-            var sonuc = list.Where(q => q.ad == ad).ToList();
+            var sonuc = list.Where(q => q.ad == ad).ToList(); // en kısa yol.
             return sonuc.AsReadOnly();
 
 
            // var sonuc = (from q in list
-             //           where q.ad == ad
+             //           where q.ad == ad     // farklı yöntem
                //         select q).ToList();
 
 
@@ -79,11 +79,20 @@ namespace CalculateVKI.Business
             //foreach(var item in list)
             //{
               //  if (item.ad == ad) 
-              //    sonuc.Add(item);
+              //    sonuc.Add(item);        //farklı bir yöntem daha
             //}
 
             //return sonuc.AsReadOnly();
         }
+
+        public static void RemovePatientByName(string name)
+        {
+            list = list.Where(q => q.ad != name).ToList();
+            string json = JsonSerializer.Serialize(list, new JsonSerializerOptions { IncludeFields = true });
+            FileOperations.Write(json);           
+            
+        }
+        
     }
 }
 

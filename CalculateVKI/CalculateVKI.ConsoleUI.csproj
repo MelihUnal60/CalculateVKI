@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CalculateVKI.Business\CalculateVKI.Business.csproj" />
+    <ProjectReference Include="..\VKIApplication.Data\VKIApplication.Data.csproj" />
   </ItemGroup>
 
 </Project>

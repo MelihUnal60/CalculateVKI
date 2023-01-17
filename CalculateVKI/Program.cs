@@ -23,6 +23,13 @@ namespace CalculateVKI
             WriteFromPatientList(data);
         }
 
+        private static void Delete()
+        {
+            Console.Write("Silinecek hasta adını girin : ");
+            string filterKey = Console.ReadLine();
+            VKIService.RemovePatientByName(filterKey);
+        }
+
         private static void CreatePatientVKI()
         {
             VKI newVKI = new VKI();
@@ -38,30 +45,40 @@ namespace CalculateVKI
             WriteVKIToScreen(newVKI);
 
             Again();
-
         }
 
         private static void Again()
         {
-            Console.WriteLine("Başka bir hasta teşhisi için E'yi, teşhis konulan hastaların listesi için L'yi,listede arama yapmak için S'yi tuşlayınız");
-            string choose = Console.ReadLine();
-            if(choose == "E" || choose == "e")
-            {
-                CreatePatientVKI();
-            }
-            else if (choose == "L" || choose == "l")
-            {
-                PatientVKIList();
-            }
-            else if (choose == "S" || choose == "s")
-            {
-                Search();
-            }
-            else
-            {
-                Console.WriteLine("Hatalı tuşlama yaptınız,devam etmek için ENTER tuşuna basın");
-              Console.ReadLine();
-              Again();
+            while(true) {
+                Console.WriteLine("Başka bir hasta teşhisi için E'yi, teşhis konulan hastaların listesi için L'yi,listede arama yapmak için S'yi,Listeden hasta adıyla silmek için D'yi tuşlayınız,Çıkmak için X");
+                string choose = Console.ReadLine();
+                if (choose == "E" || choose == "e")
+                {
+                    CreatePatientVKI();
+                }
+                else if (choose == "L" || choose == "l")
+                {
+                    PatientVKIList();
+                }
+                else if (choose == "S" || choose == "s")
+                {
+                    Search();
+                }
+                else if (choose == "D" || choose == "d")
+                {
+                    Delete();
+                }
+                else if (choose == "X" || choose == "x")
+                {
+                    Environment.Exit(0);
+                    //break;
+                }
+                else
+                {
+                    Console.WriteLine("Hatalı tuşlama yaptınız,devam etmek için ENTER tuşuna basın");
+                    Console.ReadLine();
+                    //Again();
+                }
             }
             
         }
